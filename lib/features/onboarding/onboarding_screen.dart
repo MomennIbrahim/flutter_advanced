@@ -33,7 +33,7 @@ class OnBoardingScreen extends StatelessWidget {
                   child: Text(
                     textAlign: TextAlign.center,
                     "Manage and schedule all of your medical appointments easily with Docdoc to get a new experience.",
-                    style: Styles.font13GreyW400,
+                    style: Styles.font13GreyNormal,
                   ),
                 ),
                 SizedBox(
