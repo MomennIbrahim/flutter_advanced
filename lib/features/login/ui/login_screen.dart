@@ -2,22 +2,18 @@ import 'package:advanced_app/core/helpers/spacing.dart';
 import 'package:advanced_app/core/theming/styles.dart';
 import 'package:advanced_app/core/widgets/app_button.dart';
 import 'package:advanced_app/core/widgets/app_text_button.dart';
-import 'package:advanced_app/core/widgets/app_text_form_field.dart';
+import 'package:advanced_app/features/login/data/models/login_request_body.dart';
+import 'package:advanced_app/features/login/logic/cubit/login_cubit.dart';
 import 'package:advanced_app/features/login/ui/widgets/already_have_an_account_widget.dart';
+import 'package:advanced_app/features/login/ui/widgets/emal_and_password.dart';
+import 'package:advanced_app/features/login/ui/widgets/login_bloc_listener.dart';
 import 'package:advanced_app/features/login/ui/widgets/terms_and_condition_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final formKey = GlobalKey<FormState>();
-  bool isObsecure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: Styles.font14GreyNormal,
                 ),
                 verticalSpace(36),
-                Form(
-                    child: Column(
-                  children: [
-                    const AppTextFormField(hintText: "Email"),
-                    verticalSpace(16),
-                    AppTextFormField(
-                      hintText: "Password",
-                      obsecureText: isObsecure,
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isObsecure = !isObsecure;
-                          });
-                        },
-                        child: Icon(
-                          isObsecure ? Icons.visibility_off : Icons.visibility,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
+                const EmailAndPassword(),
                 verticalSpace(10),
                 const Align(
                   alignment: AlignmentDirectional.centerEnd,
@@ -70,17 +46,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 verticalSpace(35),
                 AppButton(
                   text: 'Login',
-                  onPressed: () {},
+                  onPressed: () {
+                    validateThenDoLogin(context);
+                  },
                 ),
                 verticalSpace(20),
                 const TermsAndConditionWidget(),
                 verticalSpace(60),
                 const AlreadyHaveAnAccountWidget(),
+                const LoginBlocListener(),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void validateThenDoLogin(BuildContext context) {
+    if (context.read<LoginCubit>().formKey.currentState!.validate()) {
+      context.read<LoginCubit>().emitLoginState(
+              // loginRequestBody m7taga mny new instance mn el LoginRequestBody();
+              loginRequestBody: LoginRequestBody(
+            email: context.read<LoginCubit>().emailController.text,
+            password: context.read<LoginCubit>().passwordController.text,
+          ));
+    }
   }
 }
