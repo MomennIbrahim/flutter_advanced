@@ -1,5 +1,6 @@
 import 'package:advanced_app/core/networking/api_constance.dart';
 import 'package:advanced_app/features/login/data/models/login_response.dart';
+import 'package:advanced_app/features/sign_up/data/models/sign_up_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
@@ -14,5 +15,10 @@ abstract class ApiService {
   @POST(ApiConstance.login)
   Future<LoginResponse> login(
     @Body() loginRequestBody,
+  );
+
+    @POST(ApiConstance.signUp)
+  Future<SignUpResponse> register(
+    @Body() signUpRequestBody,
   );
 }

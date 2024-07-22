@@ -2,39 +2,39 @@ import 'package:advanced_app/core/helpers/spacing.dart';
 import 'package:advanced_app/core/theming/styles.dart';
 import 'package:advanced_app/core/widgets/app_button.dart';
 import 'package:advanced_app/core/widgets/app_text_button.dart';
-import 'package:advanced_app/features/login/logic/cubit/login_cubit.dart';
-import 'package:advanced_app/features/login/ui/widgets/dont_have_account_widget.dart';
-import 'package:advanced_app/features/login/ui/widgets/emal_and_password.dart';
-import 'package:advanced_app/features/login/ui/widgets/login_bloc_listener.dart';
 import 'package:advanced_app/features/login/ui/widgets/terms_and_condition_widget.dart';
+import 'package:advanced_app/features/sign_up/logic/cubit/sign_up_cubit.dart';
+import 'package:advanced_app/features/sign_up/ui/widgets/have_already_account.dart';
+import 'package:advanced_app/features/sign_up/ui/widgets/sign_up_bloc_listener.dart';
+import 'package:advanced_app/features/sign_up/ui/widgets/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Back',
+                  'Create Account',
                   style: Styles.font24BlueBold,
                 ),
                 verticalSpace(8),
                 Text(
-                  'We\'re excited to have you back, can\'t wait to see what you\'ve been up to since you last logged in.',
+                  "Sign up now and start exploring all that our app has to offer. We're excited to welcome you to our community!",
                   style: Styles.font14GreyNormal,
                 ),
                 verticalSpace(36),
-                const EmailAndPassword(),
+                const SignUpForm(),
                 verticalSpace(10),
                 const Align(
                   alignment: AlignmentDirectional.centerEnd,
@@ -44,16 +44,16 @@ class LoginScreen extends StatelessWidget {
                 ),
                 verticalSpace(35),
                 AppButton(
-                  text: 'Login',
+                  text: 'Sign Up',
                   onPressed: () {
-                    validateThenDoLogin(context);
+                    validateThenDoSignUp(context);
                   },
                 ),
                 verticalSpace(20),
                 const TermsAndConditionWidget(),
                 verticalSpace(60),
-                const DoNotHaveAnAccountWidget(),
-                const LoginBlocListener(),
+                const AlreadyHaveAccountText(),
+                const SignupBlocListener(),
               ],
             ),
           ),
@@ -62,9 +62,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void validateThenDoLogin(BuildContext context) {
-    if (context.read<LoginCubit>().formKey.currentState!.validate()) {
-      context.read<LoginCubit>().emitLoginState();
+  void validateThenDoSignUp(BuildContext context) {
+    if (context.read<SignUpCubit>().formKey.currentState!.validate()) {
+      context.read<SignUpCubit>().emitSignUpStates();
     }
   }
 }
